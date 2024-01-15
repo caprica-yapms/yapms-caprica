@@ -19,7 +19,6 @@ func main() {
 
 	browserlessURI := os.Getenv("BROWSERLESS_URI")
 	browserlessFrontendURI := os.Getenv("BROWSERLESS_FRONTEND_URI")
-	turnstileSecret := os.Getenv("TURNSTILE_SECRET")
 
 	app := pocketbase.New()
 
@@ -47,8 +46,6 @@ func main() {
 	})
 
 	app.OnRecordBeforeCreateRequest("maps").Add(func(e *core.RecordCreateEvent) error {
-
-		response, err := support.VerifyCaptcha(e, &turnstileSecret)
 
 		if err != nil {
 			return apis.NewApiError(

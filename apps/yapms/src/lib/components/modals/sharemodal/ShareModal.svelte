@@ -10,8 +10,6 @@
 	import { get } from 'svelte/store';
 	import { page } from '$app/stores';
 	import { PocketBaseStore } from '$lib/stores/PocketBase';
-	import { Turnstile } from 'svelte-turnstile';
-	import { PUBLIC_TURNSTILE_SITE } from '$env/static/public';
 	import { fade } from 'svelte/transition';
 	import ModalBase from '../ModalBase.svelte';
 	import * as htmlToImage from 'html-to-image';
@@ -25,14 +23,6 @@
 	let errorOnGenerateLink = false;
 	let linkID: string | null = null;
 
-	let turnstileToken: string | null = null;
-	let turnstileResetBind: () => void | undefined;
-
-	function resetTurnstile() {
-		turnstileToken = null;
-		turnstileResetBind?.();
-	}
-
 	function load() {
 		if (files && files.length > 0) {
 			loadFromFile(files);
@@ -41,11 +31,6 @@
 	}
 
 	async function generateLink() {
-		if (turnstileToken === null) {
-			resetTurnstile();
-			return;
-		}
-
 		copiedLink = false;
 		errorOnGenerateLink = false;
 		fetchingLink = true;
@@ -57,7 +42,6 @@
 		});
 
 		form.append('data', mapData);
-		form.append('turnstile-token', turnstileToken);
 
 		const pocketbaseStore = get(PocketBaseStore);
 		try {
@@ -68,8 +52,6 @@
 			console.error(error);
 		}
 		fetchingLink = false;
-		turnstileToken = null;
-		resetTurnstile();
 	}
 
 	async function copyLink() {
@@ -85,22 +67,6 @@
 		errorOnGenerateLink = false;
 		linkID = null;
 		$ShareModalStore.open = false;
-	}
-
-	function onTurnstileSuccess(event: CustomEvent<{ token: string }>) {
-		turnstileToken = event.detail.token;
-	}
-
-	function onTurnstileError() {
-		turnstileToken = null;
-	}
-
-	function onTurnstileTimeout() {
-		turnstileToken = null;
-	}
-
-	function onTurnstileExpired() {
-		turnstileToken = null;
 	}
 
 	async function screenshot() {
@@ -143,7 +109,6 @@
 						class="btn btn-secondary gap-1 flex-nowrap"
 						on:click={generateLink}
 						disabled={fetchingLink ||
-							turnstileToken === null ||
 							$page.url.pathname === '/app/imported'}
 					>
 						<Link class="w-5 h-5" />
@@ -185,17 +150,5 @@
 				<span in:fade>Error Generating Link. Try Again Later.</span>
 			{/if}
 		</button>
-	</div>
-	<div slot="action">
-		{#if $page.url.pathname !== '/app/imported'}
-			<Turnstile
-				siteKey={PUBLIC_TURNSTILE_SITE}
-				on:turnstile-callback={onTurnstileSuccess}
-				on:turnstile-expired={onTurnstileExpired}
-				on:turnstile-timeout={onTurnstileTimeout}
-				on:turnstile-error={onTurnstileError}
-				bind:reset={turnstileResetBind}
-			/>
-		{/if}
 	</div>
 </ModalBase>
