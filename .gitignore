@@ -41,6 +41,7 @@ dist/**
 .flaskenv*
 !.env.project
 !.env.vault
+/prod.env
 
 # pnpm
 .pnpm-store
