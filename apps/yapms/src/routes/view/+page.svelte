@@ -8,22 +8,25 @@
 	import { loadRegionsForView } from '$lib/utils/loadRegions';
 	import { applyAutoStroke, applyFastPanZoom } from '$lib/utils/applyPanZoom';
 	import { browser } from '$app/environment';
+	import { PocketBaseStore } from '$lib/stores/PocketBase';
+	import { PUBLIC_POCKETBASE_URI } from '$env/static/public';
 
-	$: filename = undefined as string | undefined;
-	$: countryPath = undefined as string | undefined;
-	$: map =
-		filename !== undefined && countryPath !== undefined
-			? import(`../../lib/assets/maps/${countryPath}/${filename}.svg?raw`)
-			: undefined;
+	$: filter = '';
+
+	$: mapRecord = $PocketBaseStore.collection('app_maps').getFirstListItem(filter);
+
+	$: mapFile = mapRecord.then((res) => { return fetch(`${PUBLIC_POCKETBASE_URI}/api/files/app_maps/${res.id}/${res.file}`) });
+
+	$: map = mapFile.then((res) => { return res.text() });
 
 	if (browser) {
 		loadMapFromURL($page.url, false).then(() => {
 			if ($LoadedMapStore === null) {
 				return;
 			}
-			const { country, type, year, variant } = $LoadedMapStore.map;
-			countryPath = country;
-			filename = [country, type, year, variant].filter((path) => path !== undefined).join('-');
+			const { set, country, type, year, variant } = $LoadedMapStore.map;
+			filter = `set = '${set}' && country = '${country}' && type = '${type}'
+			&& date = '${year ? year : ''}' && variant = '${variant ? variant : ''}'`
 		});
 	}
 
@@ -49,8 +52,8 @@
 		<div class="flex flex-col h-full p-3">
 			<CandidateBoxContainer selectable={false} transitions={false} />
 			<div class="grow" />
-			<div use:setupMap id="map-div" class="overflow-hidden">
-				{@html map.default}
+			<div use:setupMap id="map-div" class="h-4/5 overflow-hidden">
+				{@html map}
 			</div>
 			<div class="grow" />
 			<div>

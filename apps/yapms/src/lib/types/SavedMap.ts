@@ -5,6 +5,7 @@ import { SavedRegionSchema } from './Region';
 export const SavedMapSchema = z.object({
 	map: z.object({
 		country: z.string().regex(/^[\w-]+$/),
+		set: z.string().regex(/^[\w-]+$/),
 		type: z.string().regex(/^[\w-]+$/),
 		year: z
 			.string()

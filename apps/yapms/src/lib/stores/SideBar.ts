@@ -1,6 +1,7 @@
 import { writable } from 'svelte/store';
 import { get } from 'svelte/store';
 import { z } from 'zod';
+import type { RecordModel } from 'pocketbase';
 
 export const SideBarStore = writable({
 	open: false,
@@ -8,15 +9,12 @@ export const SideBarStore = writable({
 	sources: [] as string[]
 });
 
-function loadSidebarTitle(node: SVGElement) {
-	const title = node.getAttribute('title');
-	if (title !== null) {
-		SideBarStore.set({
-			open: get(SideBarStore).open,
-			title,
-			sources: get(SideBarStore).sources
-		});
-	}
+function loadSidebarTitle(record: RecordModel) {
+	const title = record.title;
+	SideBarStore.set({
+		...get(SideBarStore),
+		title
+	});
 }
 
 function loadSidebarSources(node: SVGElement) {

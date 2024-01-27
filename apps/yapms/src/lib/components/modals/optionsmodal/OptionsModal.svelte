@@ -6,8 +6,7 @@
 	import { MapInsetsStore } from '$lib/stores/MapInsetsStore';
 	import { ChartLeansStore } from '$lib/stores/ChartLeansStore';
 	import { LogoStore } from '$lib/stores/Logo';
-	import RedEaglePolitics from '$lib/assets/images/logos/rep.png';
-	import LetsTalkElections from '$lib/assets/images/logos/lte.png';
+	import CapricaLogo from '$lib/assets/images/logos/caprica.png';
 	import { RegionTooltipStore } from '$lib/stores/RegionTooltip';
 	import { AutoStrokeMultiplierStore } from '$lib/stores/AutoStrokeMultiplierStore';
 	import { CandidateBoxOptions } from '$lib/stores/CandidateBoxOptions';
@@ -16,8 +15,7 @@
 	let logoFileInput: HTMLInputElement | undefined;
 
 	let logos: Array<{ name: string; src: string | ArrayBuffer | null }> = [
-		{ name: 'Lets Talk Elections', src: LetsTalkElections },
-		{ name: 'Red Eagle Politics', src: RedEaglePolitics },
+		{ name: 'Caprica Logo', src: CapricaLogo },
 		{ name: 'None', src: null }
 	];
 

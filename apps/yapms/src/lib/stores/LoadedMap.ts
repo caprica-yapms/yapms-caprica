@@ -34,8 +34,8 @@ export async function loadMapFromURL(url: URL, navigate: boolean = true) {
 	}
 
 	const param = collection === 'maps' ? 'm' : 'um';
-	const { country, type, year, variant } = parsedData.data.map;
-	const neededURL = ['/app', country, type, year, variant]
+	const { set, country, type, year, variant } = parsedData.data.map;
+	const neededURL = ['/app', set, country, type, year, variant]
 		.filter((path) => path !== undefined)
 		.join('/')
 		.concat(`?${param}=${id}`);

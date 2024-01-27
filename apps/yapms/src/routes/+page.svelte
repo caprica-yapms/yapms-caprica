@@ -3,49 +3,23 @@
 	import Login from '$lib/icons/Login.svelte';
 	import Swatch from '$lib/icons/Swatch.svelte';
 	import ThemeModal from '$lib/components/modals/thememodal/ThemeModal.svelte';
-	import { ImportModalStore, AuthModalStore, ThemeModalStore } from '$lib/stores/Modals';
+	import { AuthModalStore, ThemeModalStore } from '$lib/stores/Modals';
 	import MoreMapsModal from '$lib/components/modals/moremapsmodal/MoreMapsModal.svelte';
 	import MapSearch from '$lib/components/mapsearch/MapSearch.svelte';
 	import ArrowUpTray from '$lib/icons/ArrowUpTray.svelte';
-	import ImportModal from '$lib/components/modals/importmodal/ImportModal.svelte';
 	import AuthModal from '$lib/components/modals/authmodal/AuthModal.svelte';
 	import { PocketBaseStore } from '$lib/stores/PocketBase';
 	import type { PageData } from './$types';
-	import UsaMapCard from '$lib/components/mapcard/mapcards/USAMapCard.svelte';
-	import CanMapCard from '$lib/components/mapcard/mapcards/CANMapCard.svelte';
-	import BraMapCard from '$lib/components/mapcard/mapcards/BRAMapCard.svelte';
-	import DeuMapCard from '$lib/components/mapcard/mapcards/DEUMapCard.svelte';
-	import DnkMapCard from '$lib/components/mapcard/mapcards/DNKMapCard.svelte';
-	import FraMapCard from '$lib/components/mapcard/mapcards/FRAMapCard.svelte';
-	import GbrMapCard from '$lib/components/mapcard/mapcards/GBRMapCard.svelte';
-	import ItaMapCard from '$lib/components/mapcard/mapcards/ITAMapCard.svelte';
-	import NldMapCard from '$lib/components/mapcard/mapcards/NLDMapCard.svelte';
-	import NzlMapCard from '$lib/components/mapcard/mapcards/NZLMapCard.svelte';
-	import AusMapCard from '$lib/components/mapcard/mapcards/AUSMapCard.svelte';
-	import UsaCongressionalMapCard from '$lib/components/mapcard/mapcards/USACongressionalMapCard.svelte';
-	import UsaPresidentialMapCard from '$lib/components/mapcard/mapcards/USAPresidentialMapCard.svelte';
-	import UsaStateSenateMapCard from '$lib/components/mapcard/mapcards/USAStateSenateMapCard.svelte';
-	import UsaStateHouseMapCard from '$lib/components/mapcard/mapcards/USAStateHouseMapCard.svelte';
-	import CanProvincesMapCard from '$lib/components/mapcard/mapcards/CANProvincesMapCard.svelte';
 	import UpdatesSidebar from '$lib/components/updatessidebar/UpdatesSidebar.svelte';
-	import ZafMapCard from '$lib/components/mapcard/mapcards/ZAFMapCard.svelte';
-	import GlbMapCard from '$lib/components/mapcard/mapcards/GLBMapCard.svelte';
-	import KorMapCard from '$lib/components/mapcard/mapcards/KORMapCard.svelte';
-	import CanHistoricalMapCard from '$lib/components/mapcard/mapcards/CANHistoricalMapCard.svelte';
-	import PrtMapCard from '$lib/components/mapcard/mapcards/PRTMapCard.svelte';
+	import ParlMapCard from '$lib/components/mapcard/mapcards/ParlMapCard.svelte';
+	import GenMapCard from '$lib/components/mapcard/mapcards/GenMapCard.svelte';
+	import SecMapCard from '$lib/components/mapcard/mapcards/SecMapCard.svelte';
 
 	export let data: PageData;
 
 	function openThemeModal() {
 		ThemeModalStore.set({
 			...$ThemeModalStore,
-			open: true
-		});
-	}
-
-	function openImportModal() {
-		ImportModalStore.set({
-			...$ImportModalStore,
 			open: true
 		});
 	}
@@ -59,25 +33,27 @@
 </script>
 
 <svelte:head>
-	<title>YAPms - Yet Another Political Map Simulator</title>
-	<meta name="description" content="Create and share maps of countries across the world." />
+	<title>Caprica YAPms</title>
+	<meta name="description" content="Create and share maps for the Caprica Government Simulation." />
 </svelte:head>
 
 <div class="flex flex-col h-full overflow-hidden">
 	<div class="navbar bg-base-200">
 		<div class="navbar-start">
-			<button class="btn px-8 btn-primary mr-2 hidden md:inline" on:click={openImportModal}
-				>Import</button
-			>
-			<button class="btn btn-square mr-2 inline md:hidden" on:click={openImportModal}
-				><ArrowUpTray class="h-8 m-auto" /></button
-			>
+			<span class="tooltip tooltip-right" data-tip="Please use yapms.com for importing. Import functionality on this site is not up-to-date.">
+				<button disabled class="btn px-8 btn-primary mr-2 hidden md:inline"
+					>Import</button
+				>
+				<button class="btn btn-square mr-2 inline md:hidden"
+					><ArrowUpTray class="h-8 m-auto" /></button
+				>
+			</span>
 		</div>
 		<div class="navbar-center">
 			<h1 class="text-2xl font-bold m-auto hidden lg:inline">
-				Yet Another Political Map Simulator
+				Caprica YAPms
 			</h1>
-			<h1 class="text-2xl font-bold m-auto inline lg:hidden">YAPms</h1>
+			<h1 class="text-2xl font-bold m-auto inline lg:hidden">Caprica</h1>
 		</div>
 		<div class="navbar-end">
 			<button class="btn px-8 btn-primary mr-2 hidden md:inline" on:click={openThemeModal}
@@ -102,39 +78,17 @@
 			<MapSearch data={data.post.search} />
 
 			<MapCardGrid>
-				<UsaMapCard />
-				<CanMapCard />
-				<GbrMapCard />
-				<AusMapCard />
-				<BraMapCard />
-				<DeuMapCard />
-				<DnkMapCard />
-				<ItaMapCard />
-				<NldMapCard />
-				<NzlMapCard />
-				<ZafMapCard />
-				<FraMapCard />
-				<KorMapCard />
-				<PrtMapCard />
-				<GlbMapCard />
+				<ParlMapCard />
+				<GenMapCard />
 			</MapCardGrid>
 
-			<MapCardGrid title="State & Provincial Maps">
-				<UsaStateSenateMapCard />
-				<UsaStateHouseMapCard />
-				<CanProvincesMapCard />
-			</MapCardGrid>
 
-			<MapCardGrid title="Historical Maps">
-				<UsaCongressionalMapCard />
-				<UsaPresidentialMapCard />
-				<CanHistoricalMapCard />
+			<MapCardGrid title="Election Results">
+				<SecMapCard />
 			</MapCardGrid>
 		</div>
 	</div>
 </div>
-
-<ImportModal />
 
 <MoreMapsModal />
 

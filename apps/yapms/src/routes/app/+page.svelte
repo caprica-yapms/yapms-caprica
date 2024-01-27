@@ -13,11 +13,10 @@
 </script>
 
 <svelte:head>
-	<title>YAPms - Yet Another Political Map Simulator</title>
-	<meta property="og:site_name" content="YAPms" />
+	<title>Caprica YAPms</title>
+	<meta property="og:site_name" content="Caprica YAPms" />
 	<meta property="og:type" content="website" />
 	<meta property="og:title" content="User Generated Map" />
-	<meta property="og:description" content="Yet Another Political Map Simulator" />
 	<meta property="og:image" content={imageURI} />
 	<meta name="twitter:card" content="summary_large_image" />
 </svelte:head>

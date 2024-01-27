@@ -1,25 +1,21 @@
 import type { PageServerLoad } from './$types';
-import { globSync } from 'glob';
-import fs from 'fs';
-import path from 'path';
+import { get } from 'svelte/store';
+import { PocketBaseStore } from '$lib/stores/PocketBase';
 
-export const load: PageServerLoad = () => {
-	const files = globSync('./src/lib/assets/maps/**/*.svg');
-
-	const search = [];
-
-	for (const file of files) {
-		const data = fs.readFileSync(file, 'utf8');
-		const title = data.match(/title=['"](?<title>[^'"]*)['"]/)?.groups?.['title'];
-		if (title === undefined) {
-			continue;
+export const load: PageServerLoad = async () => {
+	const search = await get(PocketBaseStore).collection('app_maps').getFullList({ sort: 'title' })
+	.then((maps) => {
+		const mapData = [];
+		for (const map of maps) {
+			const route = `/app/${map.set}/${map.country}/${map.type}${map.date ? '/' + map.date : ''}${map.variant ? '/' + map.variant : ''}`;
+			const title = map.title;
+			mapData.push({
+				title,
+				route
+			});
 		}
-		const route = '/app/' + file.split(path.sep).pop()?.split('.').at(0)?.replaceAll('-', '/');
-		search.unshift({
-			title,
-			route
-		});
-	}
+		return mapData;
+	})
 
 	return {
 		post: {

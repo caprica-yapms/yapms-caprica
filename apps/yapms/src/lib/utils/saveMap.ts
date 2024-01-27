@@ -28,6 +28,7 @@ function generateJson() {
 	}));
 
 	const map = {
+		set: get(MapIdentifier)?.set,
 		country: get(MapIdentifier)?.country,
 		type: get(MapIdentifier)?.type,
 		year: get(MapIdentifier)?.date,

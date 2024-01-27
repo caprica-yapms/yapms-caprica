@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"os"
-	"strings"
 
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
@@ -46,23 +45,7 @@ func main() {
 	})
 
 	app.OnRecordBeforeCreateRequest("maps").Add(func(e *core.RecordCreateEvent) error {
-
-		if err != nil {
-			return apis.NewApiError(
-				500,
-				err.Error(),
-				nil,
-			)
-		}
-
-		if response.Success == false {
-			return apis.NewForbiddenError(
-				strings.Join(response.ErrorCodes, ","),
-				nil,
-			)
-		}
-
-		err = support.CompressMapData(e)
+		err := support.CompressMapData(e)
 		if err != nil {
 			return apis.NewApiError(
 				500,
